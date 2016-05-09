@@ -465,3 +465,11 @@ exports.arraysIntersect = function(a, b) {
     }
     return false;
 };
+
+var warnOnceHistory = {};
+exports.warnOnce = function(message) {
+    if (!warnOnceHistory[message]) {
+        console.warn(message);
+        warnOnceHistory[message] = true;
+    }
+};
