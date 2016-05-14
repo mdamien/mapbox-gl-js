@@ -77,14 +77,15 @@ WorkerTile.prototype.parse = function(data, layerFamilies, actor, rawTileData, c
     // read each layer, and sort its features into buckets
     if (data.layers) { // vectortile
         for (sourceLayerId in bucketsBySourceLayer) {
-            if (layer.version === 1) {
-                util.warnOnce(
-                    'Vector tile source "' + this.source + '" layer "' +
-                    sourceLayerId + '" does not use vector tile spec v2 ' +
-                    'and therefore may have some rendering errors.'
-                );
-            }
             layer = data.layers[sourceLayerId];
+            if (sourceLayerId === 'landcover') {
+                if (layer.version !== 2) {
+                    console.log({bad: '!!BAD!!', zoom: this.zoom, length: layer.length, coord: this.coord, version: layer.version});
+                    // console.warn('Vector tile source "' + this.source + '.' + sourceLayerId + '" does not use vector tile specification v2 and therefore may have some rendering errors.');
+                } else {
+                    console.log({bad: '@@GOOD@@', zoom: this.zoom, length: layer.length, coord: this.coord});
+                }
+            }
             if (layer) {
                 sortLayerIntoBuckets(layer, bucketsBySourceLayer[sourceLayerId]);
             }
